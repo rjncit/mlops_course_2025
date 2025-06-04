@@ -1,12 +1,9 @@
 name: tf-infra-cicd-dev
 
-# Controls when the workflow will run
+# Trigger on pull requests to main, and allow manual runs
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
   pull_request:
     branches: [ "main" ]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
@@ -17,35 +14,52 @@ jobs:
         working-directory: mlops-course-2/terraform
 
     steps:
+      # Step 1: Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Step 2: Setup Terraform CLI
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
+      # Step 3: Debug secret lengths (does not expose them)
+      - name: Debug Secret Availability
+        run: |
+          echo "AWS_ACCESS_KEY_ID length: ${#AWS_ACCESS_KEY_ID}"
+          echo "AWS_SECRET_ACCESS_KEY length: ${#AWS_SECRET_ACCESS_KEY}"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      # Step 4: Configure AWS credentials from GitHub Secrets
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-1
-          
+
+      # Step 5: Confirm AWS credentials are working
       - name: Verify AWS Identity
         run: aws sts get-caller-identity
 
-
+      # Step 6: Check Terraform code formatting
       - name: Terraform Format
         run: terraform fmt -check
         continue-on-error: true
 
+      # Step 7: Initialize Terraform with remote backend config
       - name: Terraform Init
         run: terraform init --backend-config='backends/dev.conf'
 
+      # Step 8: Validate Terraform configuration
       - name: Terraform Validate
         run: terraform validate -no-color
 
+      # Step 9: Run Terraform plan for dev environment
       - name: Terraform Plan
         run: terraform plan -no-color --var-file='environments/dev.tfvars'
 
+      # Step 10: Apply Terraform plan automatically
       - name: Terraform Apply
         run: terraform apply --var-file='environments/dev.tfvars' -auto-approve
