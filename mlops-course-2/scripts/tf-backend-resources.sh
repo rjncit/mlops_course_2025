@@ -2,7 +2,7 @@ AWS CLI
 -------
 
 # Specify the username for the new IAM user
-USER_NAME="terraform_user"
+USER_NAME="terraform_user1"
 
 # Create IAM User and capture the response
 USER_RESPONSE=$(aws iam create-user --user-name "$USER_NAME")
