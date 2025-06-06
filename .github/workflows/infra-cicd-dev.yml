@@ -39,7 +39,7 @@ jobs:
         continue-on-error: true
 
       - name: Terraform Init
-        run: terraform init -backend-config='backends/dev.conf' -input=false -no-color -reconfigure
+        run: terraform init --backend-config='backends/dev.conf'
 
       - name: Terraform Validate
         run: terraform validate -no-color
@@ -52,9 +52,9 @@ jobs:
         timeout-minutes: 60
         with:
           secret: ${{ github.token }}
-          approvers: rjncit
+          approvers: geekzyn
           issue-title: "Deploy Terraform Plan to dev"
-          issue-body: "Please review Terraform Plan"
+          issue-body: "Please review the Terraform Plan"
           exclude-workflow-initiator-as-approver: false
 
       - name: Terraform Apply
