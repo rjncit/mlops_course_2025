@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/rajanjoshi/Mlops/mlops_course_2025/mlops-course-04/src/mlruns/836743358808395178/cf25d35e2ad143a490478052ed5c578d/artifacts
+end_time: 1749204851813
+entry_point_name: ''
+experiment_id: '836743358808395178'
+lifecycle_stage: active
+run_id: cf25d35e2ad143a490478052ed5c578d
+run_name: resilient-tern-615
+run_uuid: cf25d35e2ad143a490478052ed5c578d
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1749204850751
+status: 4
+tags: []
+user_id: rajanjoshi

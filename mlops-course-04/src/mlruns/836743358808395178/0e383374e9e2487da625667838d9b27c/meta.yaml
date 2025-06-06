@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/rajanjoshi/Mlops/mlops_course_2025/mlops-course-04/src/mlruns/836743358808395178/0e383374e9e2487da625667838d9b27c/artifacts
+end_time: 1749205045584
+entry_point_name: ''
+experiment_id: '836743358808395178'
+lifecycle_stage: active
+run_id: 0e383374e9e2487da625667838d9b27c
+run_name: zealous-lamb-82
+run_uuid: 0e383374e9e2487da625667838d9b27c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1749205041712
+status: 3
+tags: []
+user_id: rajanjoshi

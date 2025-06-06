@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1749205024148
+current_stage: None
+description: null
+last_updated_timestamp: 1749205024148
+name: insurance_model
+run_id: 6037b045c1b144dfb10c9331a57717bc
+run_link: null
+source: file:///Users/rajanjoshi/Mlops/mlops_course_2025/mlops-course-04/src/mlruns/836743358808395178/6037b045c1b144dfb10c9331a57717bc/artifacts/model
+status: READY
+status_message: null
+storage_location: file:///Users/rajanjoshi/Mlops/mlops_course_2025/mlops-course-04/src/mlruns/836743358808395178/6037b045c1b144dfb10c9331a57717bc/artifacts/model
+user_id: null
+version: 1
