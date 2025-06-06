@@ -4,7 +4,7 @@ aws_region  = "eu-west-1"
 
 s3_buckets = [
   {
-    key  = "mlops-course-ehb-datastore"
+    key  = "mlops-course-ehb-datastore-9129"
     tags = {}
   }
 ]
@@ -16,7 +16,7 @@ ecr_repositories = [
     image_scanning_configuration = {
       scan_on_push = true
     }
-    tags = {}
+    tags = {}git
   }
 ]
 
