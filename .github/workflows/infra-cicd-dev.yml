@@ -34,6 +34,43 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-1
 
+      # 🔧 New Step: Create S3 bucket for Terraform state if it doesn't exist
+      - name: Create Terraform State Bucket if Not Exists
+        run: |
+          BUCKET_NAME="tf-remote-backend-ehb9129"
+          REGION="eu-west-1"
+
+          echo "Checking if bucket '$BUCKET_NAME' exists..."
+          if aws s3api head-bucket --bucket "$BUCKET_NAME"; then
+            echo "Bucket '$BUCKET_NAME' already exists."
+          else
+            echo "Bucket '$BUCKET_NAME' does not exist. Creating now..."
+
+            # For regions other than us-east-1, include LocationConstraint
+            if [[ "$REGION" == "us-east-1" ]]; then
+              aws s3api create-bucket --bucket "$BUCKET_NAME" --region "$REGION"
+            else
+              aws s3api create-bucket \
+                --bucket "$BUCKET_NAME" \
+                --region "$REGION" \
+                --create-bucket-configuration LocationConstraint=$REGION
+            fi
+
+            # Enable versioning
+            echo "Enabling versioning on bucket '$BUCKET_NAME'..."
+            aws s3api put-bucket-versioning \
+              --bucket "$BUCKET_NAME" \
+              --versioning-configuration Status=Enabled
+
+            # Enable server-side encryption
+            echo "Enabling encryption on bucket '$BUCKET_NAME'..."
+            aws s3api put-bucket-encryption \
+              --bucket "$BUCKET_NAME" \
+              --server-side-encryption-configuration '{"Rules":[{"ApplyServerSideEncryptionByDefault":{"SSEAlgorithm":"AES256"}}]}'
+
+            echo "Bucket '$BUCKET_NAME' created successfully."
+          fi
+
       - name: Terraform Format
         run: terraform fmt -check
         continue-on-error: true
