@@ -54,7 +54,7 @@ jobs:
           secret: ${{ github.token }}
           approvers: rjncit
           issue-title: "Deploy Terraform Plan to dev"
-          issue-body: "Please review the Terraform Plan"
+          issue-body: "Please review Terraform Plan"
           exclude-workflow-initiator-as-approver: false
 
       - name: Terraform Apply
