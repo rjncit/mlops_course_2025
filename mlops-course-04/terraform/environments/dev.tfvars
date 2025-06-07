@@ -4,14 +4,14 @@ aws_region  = "eu-west-1"
 
 s3_buckets = [
   {
-    key  = "mlops-course-ehb-datastore9129"
+    key  = "mlops-course-ehb-datastore"
     tags = {}
   }
 ]
 
 ecr_repositories = [
   {
-    key                  = "mlops-course-ehb-repository9129"
+    key                  = "mlops-course-ehb-repository"
     image_tag_mutability = "MUTABLE"
     image_scanning_configuration = {
       scan_on_push = true
@@ -22,10 +22,10 @@ ecr_repositories = [
 
 apprunner_services = [
   {
-    key = "mlops-course-ehb-app9129"
+    key = "mlops-course-ehb-app"
     source_configuration = {
       image_repository = {
-        image_identifier = "331135961676.dkr.ecr.eu-west-1.amazonaws.com/ecr-mlops-course-ehb-repository9129-dev:latest"
+        image_identifier      = "331135961676.dkr.ecr.eu-west-1.amazonaws.com/ecr-mlops-course-ehb-repository-dev:latest"
         image_repository_type = "ECR"
         image_configuration = {
           port = 80
