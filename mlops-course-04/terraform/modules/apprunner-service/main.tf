@@ -5,6 +5,7 @@ resource "aws_apprunner_service" "ars" {
     authentication_configuration {
       access_role_arn = aws_iam_role.iamr.arn
     }
+
     image_repository {
       image_identifier      = var.source_configuration.image_repository.image_identifier
       image_repository_type = var.source_configuration.image_repository.image_repository_type
@@ -12,8 +13,20 @@ resource "aws_apprunner_service" "ars" {
         port = var.source_configuration.image_repository.image_configuration.port
       }
     }
+
     auto_deployments_enabled = var.source_configuration.auto_deployments_enabled
   }
+
+  # Add health check config here:
+  health_check_configuration {
+    protocol            = "HTTP"
+    path                = "/"           # Adjust if your app has a different health path
+    interval            = 10            # seconds between health checks
+    timeout             = 5             # seconds to wait for response
+    healthy_threshold   = 2             # consecutive successes before healthy
+    unhealthy_threshold = 2             # consecutive failures before unhealthy
+  }
+
   tags = var.tags
 }
 
