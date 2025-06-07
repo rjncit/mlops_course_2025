@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 resource "aws_apprunner_service" "ars" {
   service_name = local.service_name
 
@@ -6,7 +8,7 @@ resource "aws_apprunner_service" "ars" {
       access_role_arn = aws_iam_role.iamr.arn
     }
     image_repository {
-      image_identifier      = var.source_configuration.image_repository.image_identifier
+      image_identifier = "${data.aws_caller_identity.current.account_id}.dkr.ecr.eu-west-1.amazonaws.com/ecr-mlops-course-ehb-repository-dev:latest"
       image_repository_type = var.source_configuration.image_repository.image_repository_type
       image_configuration {
         port = var.source_configuration.image_repository.image_configuration.port
