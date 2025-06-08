@@ -1,5 +1,5 @@
 resource "aws_apprunner_service" "ars" {
-  service_name = local.service_name
+  service_name = "${local.service_name}-v2"  # <- ensure unique name
 
   source_configuration {
     authentication_configuration {
@@ -9,22 +9,22 @@ resource "aws_apprunner_service" "ars" {
     image_repository {
       image_identifier      = var.source_configuration.image_repository.image_identifier
       image_repository_type = var.source_configuration.image_repository.image_repository_type
+
       image_configuration {
-        port = var.source_configuration.image_repository.image_configuration.port
+        port = 80  # Ensure this matches your Dockerfile
       }
     }
 
     auto_deployments_enabled = var.source_configuration.auto_deployments_enabled
   }
 
-  # Add health check config here:
   health_check_configuration {
     protocol            = "HTTP"
-    path                = "/"           # Adjust if your app has a different health path
-    interval            = 10            # seconds between health checks
-    timeout             = 5             # seconds to wait for response
-    healthy_threshold   = 2             # consecutive successes before healthy
-    unhealthy_threshold = 2             # consecutive failures before unhealthy
+    path                = "/"               # Change to a real route like "/ping" if needed
+    interval            = 10
+    timeout             = 5
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
   }
 
   tags = var.tags
@@ -32,15 +32,16 @@ resource "aws_apprunner_service" "ars" {
 
 resource "aws_iam_role" "iamr" {
   name = "${local.service_name}-ars-iam-role"
+
   assume_role_policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
+    Version = "2012-10-17",
+    Statement = [
       {
-        "Effect" : "Allow",
-        "Principal" : {
-          "Service" : "build.apprunner.amazonaws.com"
+        Effect = "Allow",
+        Principal = {
+          Service = "build.apprunner.amazonaws.com"
         },
-        "Action" : "sts:AssumeRole"
+        Action = "sts:AssumeRole"
       }
     ]
   })
